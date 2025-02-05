@@ -1,10 +1,28 @@
+import { notFound } from "next/navigation";
 import styles from "../page.module.css";
 import RefreshButton from "../RefreshButton";
 
 export const dynamic = "force-static";
 
+const timezones = [
+  {
+    timezone: ["America", "Toronto"],
+  },
+  {
+    timezone: ["America", "Montreal"],
+  },
+  {
+    timezone: ["America", "Vancouver"],
+  },
+];
+
 export default async function Home({ params }: { params: Record<string, string[]> }) {
   const timezone = params.timezone.join("/");
+
+  if (!timezones.find((entry) => entry.timezone.join("/") === timezone)) {
+    return notFound();
+  }
+
   const request = await fetch(`http://worldtimeapi.org/api/timezone/${timezone}`, {
     next: { tags: ["timezones", `timezone-${timezone}`] },
   });
@@ -19,4 +37,8 @@ export default async function Home({ params }: { params: Record<string, string[]
       </main>
     </div>
   );
+}
+
+export function generateStaticParams() {
+  return timezones;
 }
