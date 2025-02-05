@@ -1,7 +1,7 @@
 import styles from "../page.module.css";
 import RefreshButton from "../RefreshButton";
 
-export const dynamic = "auto";
+export const dynamic = "force-static";
 
 export default async function Home({ params }: { params: Record<string, string[]> }) {
   const timezone = params.timezone.join("/");
